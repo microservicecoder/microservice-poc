@@ -1,0 +1,63 @@
+
+/*
+protoBuffFile: which is used to expose the gRPC services.
+Note: To expose endpoints in API, we use api controllers. to expose endpoints in GRPC, we use
+protoBuffFile classes(protos).
+*/
+
+// syntax is important as proto buffer compiler checks which language we use to generate the 
+// c# classes.
+syntax = "proto3";
+
+//namespace is optional, which tells the proto buffer compiler to generate the c# classes with in the
+// given name space.
+
+option csharp_namespace = "Discount.Grpc.Protos";
+
+//to expose the grpc services outside we open a service with name "DiscountProtoService"
+//this is the basic syntax to expose the grpc services.
+service DiscountProtoService {
+
+// In the service DiscountProtoService, we will expose few services. For this we will use
+// rpc protocal and define the complex types for CRUD operations.
+
+//parameters are : GetDiscountRequest and CouponModel
+
+	rpc GetDiscount (GetDiscountRequest) returns (CouponModel);
+
+	rpc CreateDiscount (CreateDiscountRequest) returns (CouponModel);
+	rpc UpdateDiscount (UpdateDiscountRequest) returns (CouponModel);
+	rpc DeleteDiscount (DeleteDiscountRequest) returns (DeleteDiscountResponse);
+}
+
+//Now we have to define the complex types "CreateDiscountRequest" & CouponModel
+//Note: every complex type has to be defined.
+
+message GetDiscountRequest {
+	string productName = 1;	
+}
+
+// we have to give the order of properties in the mode.
+
+message CouponModel {
+	int32 id = 1;
+	string productName = 2;
+	string description = 3;
+	int32 amount = 4;
+}
+
+message CreateDiscountRequest {
+	CouponModel coupon = 1;
+}
+
+message UpdateDiscountRequest {
+	CouponModel coupon = 1;
+}
+
+message DeleteDiscountRequest {
+	string productName = 1;
+}
+
+message DeleteDiscountResponse {
+	bool success = 1;
+}

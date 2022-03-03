@@ -1,0 +1,68 @@
+version: '3.4'
+
+#docker-compose.yml file specify the image of the project ex: catalog.api and its context [file path]
+# file path is very important.it is required for the docker-compose when running the catalog.api image
+# in our local containers.
+
+#note : indetaion are very important in yml file. if we check the below configurations, we have 2 spaces
+# for the configs like a structure.
+
+# now lets add the Mongo DB image. mongo is a official image from docker hub. when application is running
+# docker check the mongo image from docker hub and download. if mongo exists in local computer then 
+# it will use the existing mongo image.
+
+#at this moment we have 2 services in docker-compose. one is mongo db and other is catalog project.
+
+services:
+  catalogdb:
+    image: mongo
+
+  basketdb:
+    image: redis:alpine
+
+  discountdb:
+    image: postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+
+  portainer:
+    image: portainer/portainer-ce
+
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+
+
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.API/Dockerfile
+
+
+  discount.api:
+    image: ${DOCKER_REGISTRY-}discountapi
+    build:
+      context: .
+      dockerfile: Services/Discount/Discount.API/Dockerfile
+
+  discount.grpc:
+    image: ${DOCKER_REGISTRY-}discountgrpc
+    build:
+      context: .
+      dockerfile: Services/Discount/Discount.Grpc/Dockerfile
+
+# volumes are used to specify the data storage of tables & collection is the file storage of our local 
+# folder.
+
+volumes:
+  mongo_data:
+  postgres_data:
+  pgadmin_data:
+  portainer_data:
+
+
+

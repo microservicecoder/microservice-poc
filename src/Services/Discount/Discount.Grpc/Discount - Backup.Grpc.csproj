@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Protos\discount.proto" />
+	</ItemGroup>
+
+	<!--settings of Grpc service. GrpcServices="Server" indicate that this is a server Grpc service
+	these properties can be changed from here or else properties window od greet.proto. such as 
+	changing from server to client, client and server etc...-->
+	<ItemGroup>
+		<Protobuf Include="Protos\discount.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+	</ItemGroup>
+
+	<!--Grpc.AspNetCore package should be there for a Grpc service-->
+	<ItemGroup>
+		<PackageReference Include="Automapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.42.0" />
+		<!--Dapper is a ORM [obejct relational mapping which is used to map the things b/w the db 
+	 and entity classes-->
+		<PackageReference Include="Dapper" Version="2.0.123" />
+		<!--Npgsql: is used to connect with the postgre sql-->
+		<PackageReference Include="Npgsql" Version="6.0.3" />
+	</ItemGroup>
+
+</Project>
